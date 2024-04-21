@@ -17,11 +17,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
 
     catController = AnimationController(
-      duration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 200),
       vsync: this,
     );
 
-    catAnimation = Tween(begin: -50.0, end: 100.0).animate(
+    catAnimation = Tween(begin: -35.0, end: -80.0).animate(
       CurvedAnimation(
         parent: catController,
         curve: Curves.easeIn,
@@ -47,9 +47,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         onTap: onTap,
         child: Center(
           child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              buildBox(),
               buildCatAnimation(),
+              buildBox(),
+              buildLeftFlap(),
             ],
           ),
         ),
@@ -77,6 +79,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       color: Colors.brown,
       height: 200.0,
       width: 200.0,
+    );
+  }
+
+  Widget buildLeftFlap() {
+    return Container(
+      color: Colors.red,
+      height: 10.0,
+      width: 125.0,
     );
   }
 }
