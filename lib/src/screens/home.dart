@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animation/src/widgets/cat.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +14,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   late Animation<double> catAnimation;
   late AnimationController catController;
 
+  late Animation<double> boxAnimation;
+  late AnimationController boxController;
+
   @override
   void initState() {
     super.initState();
+
+    boxController = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    );
+
+    boxAnimation = Tween(begin: 0.0, end: pi).animate(
+      CurvedAnimation(
+        parent: boxController,
+        curve: Curves.linear,
+      ),
+    );
 
     catController = AnimationController(
       duration: Duration(milliseconds: 200),
@@ -83,10 +100,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget buildLeftFlap() {
-    return Container(
-      color: Colors.red,
-      height: 10.0,
-      width: 125.0,
+    return Positioned(
+      left: 3.0,
+      child: AnimatedBuilder(
+        animation: boxAnimation,
+        builder: (BuildContext context, Widget? child) {
+          return Transform.rotate(
+            alignment: Alignment.topLeft,
+            angle: boxAnimation.value,
+            child: child,
+          );
+        },
+        child: Container(
+          color: Colors.brown,
+          height: 10.0,
+          width: 125.0,
+        ),
+      ),
     );
   }
 }
